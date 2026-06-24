@@ -1,7 +1,7 @@
 import React from "react";
 import { useUser, useClerk } from "@clerk/clerk-react";
 
-export default function Navbar({ activeTab, setActiveTab, onAddTransaction }) {
+export default function Navbar({ activeTab, setActiveTab, onAddTransaction, isOpen, onClose }) {
   const { user } = useUser();
   const { signOut } = useClerk();
 
@@ -45,24 +45,51 @@ export default function Navbar({ activeTab, setActiveTab, onAddTransaction }) {
   };
 
   return (
-    <aside className="w-64 bg-white/40 dark:bg-slate-950/40 backdrop-blur-xl text-slate-500 dark:text-slate-400 flex flex-col h-screen sticky top-0 border-r border-slate-200/50 dark:border-slate-800/40 transition-colors duration-300">
-      {/* Sidebar Header / Logo */}
-      <div className="h-16 flex items-center px-6 border-b border-slate-200/60 dark:border-slate-800/60 gap-2.5">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center shadow-md shadow-indigo-500/20">
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
+    <>
+      {/* Backdrop overlay for mobile menu drawer */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-xs md:hidden transition-opacity duration-300"
+          onClick={onClose}
+        />
+      )}
+
+      <aside className={`w-64 bg-white/70 dark:bg-slate-950/80 md:bg-white/40 md:dark:bg-slate-950/40 backdrop-blur-xl text-slate-500 dark:text-slate-400 flex flex-col h-screen fixed md:sticky inset-y-0 left-0 z-50 border-r border-slate-200/50 dark:border-slate-800/40 transition-transform duration-300 ease-in-out ${
+        isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+      }`}>
+        {/* Sidebar Header / Logo */}
+        <div className="h-16 flex items-center justify-between px-6 border-b border-slate-200/60 dark:border-slate-800/60">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center shadow-md shadow-indigo-500/20">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <div>
+              <span className="font-extrabold text-slate-800 dark:text-white text-lg tracking-tight transition-colors">AURUM</span>
+              <span className="text-[10px] block text-indigo-650 dark:text-indigo-400 font-bold tracking-wider uppercase">Fintech SaaS</span>
+            </div>
+          </div>
+
+          {/* Mobile close button */}
+          <button
+            onClick={onClose}
+            className="md:hidden w-8 h-8 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-slate-650 dark:hover:text-slate-200 transition-colors"
+            title="Collapse Sidebar"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
-        <div>
-          <span className="font-extrabold text-slate-800 dark:text-white text-lg tracking-tight transition-colors">AURUM</span>
-          <span className="text-[10px] block text-indigo-650 dark:text-indigo-400 font-bold tracking-wider uppercase">Fintech SaaS</span>
-        </div>
-      </div>
 
       {/* Quick Action Button */}
       <div className="px-4 py-4">
         <button
-          onClick={onAddTransaction}
+          onClick={() => {
+            onAddTransaction();
+            onClose?.(); // Close mobile menu drawer
+          }}
           className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg py-2.5 px-4 text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20 transition-all active:scale-[0.98] duration-150 cursor-pointer"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -79,7 +106,10 @@ export default function Navbar({ activeTab, setActiveTab, onAddTransaction }) {
           return (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
+              onClick={() => {
+                setActiveTab(item.id);
+                onClose?.(); // Close mobile menu drawer
+              }}
               className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-150 cursor-pointer group ${
                 isActive
                   ? "bg-indigo-50/70 dark:bg-indigo-950/20 text-indigo-600 dark:text-indigo-400 shadow-sm border-l-2 border-indigo-600 dark:border-indigo-500 font-bold"
@@ -130,6 +160,7 @@ export default function Navbar({ activeTab, setActiveTab, onAddTransaction }) {
           </svg>
         </button>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }

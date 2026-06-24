@@ -23,6 +23,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [isAddDrawerOpen, setIsAddDrawerOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Clerk Auth Token Retrieval hook
   const { getToken } = useAuth();
@@ -79,13 +80,26 @@ export default function App() {
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           onAddTransaction={() => setIsAddDrawerOpen(true)}
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
         />
 
         {/* Right Main Panel */}
         <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden">
           {/* Sticky App Header Bar (Glassmorphic) */}
-          <header className="h-16 glass-header px-8 flex items-center justify-between sticky top-0 z-30 shadow-sm">
-            <div>
+          <header className="h-16 glass-header px-4 md:px-8 flex items-center justify-between sticky top-0 z-30 shadow-sm">
+            <div className="flex items-center gap-3">
+              {/* Mobile Hamburger Menu Toggle */}
+              <button
+                onClick={() => setIsSidebarOpen(true)}
+                className="md:hidden w-9 h-9 rounded-lg border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-all cursor-pointer"
+                title="Open Navigation"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5.5 h-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+
               <h1 className="text-base font-bold text-slate-800 dark:text-white tracking-tight transition-colors">
                 {getTabTitle()}
               </h1>
@@ -114,7 +128,7 @@ export default function App() {
           </header>
 
           {/* Tab Content Area */}
-          <main className="flex-grow p-8 max-w-6xl mx-auto w-full space-y-6">
+          <main className="flex-grow p-4 sm:p-6 md:p-8 max-w-6xl mx-auto w-full space-y-6">
             {activeTab === "dashboard" && (
               <Dashboard refreshKey={refreshKey} getToken={getToken} />
             )}
