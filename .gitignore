@@ -1,0 +1,13 @@
+# Frontend
+finance-frontend/node_modules
+finance-frontend/dist
+finance-frontend/.env
+
+# Backend
+finance-backend/__pycache__
+finance-backend/.env
+finance-backend/*.pyc
+
+# General
+.vscode
+.DS_Store
