@@ -35,6 +35,7 @@ export default function ExpenseList({ refreshKey, getToken }) {
 
         // Fetch session token from Clerk
         const token = await getToken();
+        console.log("DEBUG: [ExpenseList] Fetched Clerk Token:", token ? `${token.slice(0, 15)}...` : "null/undefined");
         const headers = { Authorization: `Bearer ${token}` };
 
         const res = await api.get("/transactions", { params, headers });

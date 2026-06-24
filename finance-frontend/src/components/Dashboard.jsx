@@ -61,6 +61,7 @@ export default function Dashboard({ refreshKey, getToken }) {
       try {
         // Fetch session token from Clerk
         const token = await getToken();
+        console.log("DEBUG: [Dashboard] Fetched Clerk Token:", token ? `${token.slice(0, 15)}...` : "null/undefined");
         const headers = { Authorization: `Bearer ${token}` };
 
         const [summaryRes, txRes] = await Promise.all([
