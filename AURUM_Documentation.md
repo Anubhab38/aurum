@@ -80,6 +80,8 @@ AURUM is a premium, high-converting personal finance dashboard styled after mode
 * **[main.jsx](file:///D:/WEBFULLSTACK/PROJECTS/finance/finance-frontend/src/main.jsx)**:
   - Wrapped the React tree inside `<ClerkProvider>` and configured it with `import.meta.env.VITE_CLERK_PUBLISHABLE_KEY`.
   - Upgraded missing-key validations to render a premium, user-friendly setup warning card instead of throwing uncaught bootstrap crashes.
+* **[api.js](file:///D:/WEBFULLSTACK/PROJECTS/finance/finance-frontend/src/api.js)**:
+  - Configured global Axios baseURL to point to the hosted Render backend (`https://aurum-yt58.onrender.com`), with support for local overrides via `VITE_API_URL`.
 * **[Navbar.jsx](file:///D:/WEBFULLSTACK/PROJECTS/finance/finance-frontend/src/components/Navbar.jsx)**:
   - Redesigned into a theme-adaptive glass sidebar.
   - Rebranded heading to **AURUM**.
@@ -121,5 +123,6 @@ AURUM is a premium, high-converting personal finance dashboard styled after mode
 * **[main.py](file:///D:/WEBFULLSTACK/PROJECTS/finance/finance-backend/main.py)**:
   - Imported `Request` and `Depends` from fastapi, alongside `Limiter` and `ClerkAuth` dependencies.
   - Configured IP rate limits on all endpoints.
+  - Added the Vercel frontend URL (`https://aurum-omega-one.vercel.app`) to CORS allowed origins to resolve browser resource sharing blocks.
   - Injected `userId: str = Depends(ClerkAuth())` into endpoints.
   - Refactored routes to filter and tag transaction documents inside MongoDB using the authenticated `userId`.

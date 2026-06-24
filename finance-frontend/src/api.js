@@ -1,9 +1,9 @@
 import axios from "axios";
 
-// One axios instance for the whole app. If the backend port/host changes,
-// this is the only line that needs to change.
+// One axios instance for the whole app. Reads from VITE_API_URL environment variable,
+// falling back to the deployed Render backend URL.
 const api = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: import.meta.env.VITE_API_URL || "https://aurum-yt58.onrender.com",
 });
 
 export default api;

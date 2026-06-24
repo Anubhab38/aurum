@@ -22,10 +22,14 @@ limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-# Allow the Vite dev server (default port 5173) to call this API from the browser.
+# Allow the Vite dev server and the deployed Vercel frontend to call this API.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=[
+        "http://localhost:5173", 
+        "http://127.0.0.1:5173",
+        "https://aurum-omega-one.vercel.app"
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
 )
